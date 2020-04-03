@@ -1,11 +1,11 @@
 const { sequelize } = require("../models");
 
-const { models: { users }} = sequelize
+const { models: { messages }} = sequelize
 
 module.exports = {
   index: async (req, res) => {
     try {
-      const response = await users.findAll();
+      const response = await messages.findAll();
 
       return res.json(response);
     } catch (error) {
