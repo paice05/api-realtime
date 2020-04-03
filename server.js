@@ -1,13 +1,18 @@
 const express = require("express");
 const http = require("http");
 const socketio = require("socket.io");
+const morgan = require("morgan");
+const bodyParser = require("body-parser");
+const cors = require("cors");
+
+const routes = require("./src/routes");
 
 const formatMessage = require("./utils/messages");
 const {
   userJoin,
   getCurrentUser,
   userLeave,
-  getRoomUsers
+  getRoomUsers,
 } = require("./utils/users");
 
 const app = express();
@@ -17,7 +22,13 @@ const io = socketio(server);
 const PORT = process.env.PORT || 3333;
 const botName = "Chat Bot";
 
-io.on("connection", socket => {
+app.use(bodyParser.json());
+app.use(morgan("dev"));
+app.use(cors());
+
+app.use(routes);
+
+io.on("connection", (socket) => {
   // console.log("new ws connection...", socket.id);
 
   socket.on("joinRoom", ({ username, room }) => {
@@ -35,7 +46,7 @@ io.on("connection", socket => {
       );
   });
 
-  socket.on("chatMessage", msg => {
+  socket.on("chatMessage", (msg) => {
     const user = getCurrentUser(socket.id);
 
     io.to(user.room).emit("message", formatMessage(user.username, msg));
