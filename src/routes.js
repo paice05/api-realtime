@@ -1,7 +1,7 @@
-const { Router } = require("express");
+import { Router } from 'express'
 
-const controllerUser = require("./controller/users");
-const controllerMessages = require("./controller/messages");
+import controllerUser from "./controller/users";
+import controllerMessages from "./controller/messages";
 
 const routes = Router();
 

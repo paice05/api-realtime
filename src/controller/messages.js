@@ -1,6 +1,8 @@
-const { sequelize } = require("../models");
+import { sequelize } from "../models";
 
-const { models: { messages }} = sequelize
+const {
+  models: { messages },
+} = sequelize;
 
 module.exports = {
   index: async (req, res) => {

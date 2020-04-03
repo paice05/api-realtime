@@ -1,19 +1,19 @@
-const express = require("express");
-const http = require("http");
-const socketio = require("socket.io");
-const morgan = require("morgan");
-const bodyParser = require("body-parser");
-const cors = require("cors");
+import express from "express";
+import http from "http";
+import socketio from "socket.io";
+import morgan from "morgan";
+import bodyParser from "body-parser";
+import cors from "cors";
 
-const routes = require("./src/routes");
+import routes from "./src/routes";
 
-const formatMessage = require("./utils/messages");
-const {
+import formatMessage from "./utils/messages";
+import {
   userJoin,
   getCurrentUser,
   userLeave,
   getRoomUsers,
-} = require("./utils/users");
+} from "./utils/users";
 
 const app = express();
 const server = http.createServer(app);

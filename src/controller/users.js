@@ -1,6 +1,8 @@
-const { sequelize } = require("../models");
+import { sequelize } from "../models";
 
-const { models: { users }} = sequelize
+const {
+  models: { users },
+} = sequelize;
 
 module.exports = {
   index: async (req, res) => {
