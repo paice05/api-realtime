@@ -10,9 +10,17 @@ module.exports = {
         type: Sequelize.UUID,
         allowNull: false,
         references: {
-          model: 'users',
-          key: 'id'
-        }
+          model: "users",
+          key: "id",
+        },
+      },
+      roomId: {
+        type: Sequelize.UUID,
+        allowNull: false,
+        references: {
+          model: "rooms",
+          key: "id",
+        },
       },
       text: {
         type: Sequelize.STRING,

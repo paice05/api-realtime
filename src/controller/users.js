@@ -15,7 +15,20 @@ module.exports = {
     }
   },
   show: async (req, res) => {},
-  create: async (req, res) => {},
+  create: async (req, res) => {
+    const { name, username, password } = req.body;
+    try {
+      const response = await users.create({
+        name,
+        username,
+        password,
+      });
+
+      return res.json(response);
+    } catch (error) {
+      return res.status(500).json(error.toString());
+    }
+  },
   update: async (req, res) => {},
   destroy: async (req, res) => {},
 };

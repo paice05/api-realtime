@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-  const Users = sequelize.define(
-    "users",
+  const Rooms = sequelize.define(
+    "rooms",
     {
       id: {
         type: DataTypes.UUID,
@@ -8,20 +8,18 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
       },
       name: DataTypes.STRING,
-      username: DataTypes.STRING,
-      password: DataTypes.STRING,
     },
     {
-      tableName: "users",
+      tableName: "rooms",
       defaultScope: {
         attributes: { exclude: ["password"] },
       },
     }
   );
 
-  Users.associate = (models) => {
-    Users.hasMany(models.messages, { foreignKey: "userId", as: "messages" });
+  Rooms.associate = (models) => {
+    Rooms.hasMany(models.messages, { foreignKey: "roomId", as: "messages" });
   };
 
-  return Users;
+  return Rooms;
 };

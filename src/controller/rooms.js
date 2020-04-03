@@ -1,13 +1,14 @@
 import { sequelize } from "../models";
 
 const {
-  models: { messages },
+  models: { rooms },
 } = sequelize;
 
 module.exports = {
   index: async (req, res) => {
+    const { query } = req;
     try {
-      const response = await messages.findAll();
+      const response = await rooms.findAll(query);
 
       return res.json(response);
     } catch (error) {
@@ -16,12 +17,10 @@ module.exports = {
   },
   show: async (req, res) => {},
   create: async (req, res) => {
-    const { text, roomId, userId } = req.body;
+    const { name } = req.body;
     try {
-      const response = await messages.create({
-        text,
-        roomId,
-        userId,
+      const response = await rooms.create({
+        name,
       });
 
       return res.json(response);
