@@ -1,34 +1,41 @@
 import { sequelize } from "../models";
 
+import BaseController from "./BaseController";
+
 const {
   models: { users },
 } = sequelize;
 
-module.exports = {
-  index: async (req, res) => {
-    try {
-      const response = await users.findAll();
+class UserController extends BaseController {
+  constructor() {
+    super(users, "/users");
 
-      return res.json(response);
-    } catch (error) {
-      return res.status(500).json(error.toString());
-    }
-  },
-  show: async (req, res) => {},
-  create: async (req, res) => {
-    const { name, username, password } = req.body;
+    this.userModel = users;
+  }
+
+  async auth(req, res) {
+    const { username, password } = req.body;
     try {
-      const response = await users.create({
-        name,
-        username,
-        password,
+      const isUser = await this.userModel.findOne({
+        where: {
+          username,
+          password,
+        },
       });
 
-      return res.json(response);
-    } catch (error) {
-      return res.status(500).json(error.toString());
-    }
-  },
-  update: async (req, res) => {},
-  destroy: async (req, res) => {},
-};
+      if (!isUser) return res.status(500).json({ message: "User not found" });
+
+      return res.json(isUser);
+    } catch (error) {}
+  }
+
+  routes() {
+    const routes = super.routes();
+
+    routes.post("/auth", this.auth.bind(this));
+
+    return routes;
+  }
+}
+
+export default new UserController();

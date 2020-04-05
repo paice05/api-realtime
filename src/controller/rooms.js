@@ -1,33 +1,41 @@
 import { sequelize } from "../models";
 
+import BaseController from "./BaseController";
+
 const {
   models: { rooms },
 } = sequelize;
 
-module.exports = {
-  index: async (req, res) => {
-    const { query } = req;
-    try {
-      const response = await rooms.findAll(query);
+class RoomController extends BaseController {
+  constructor() {
+    super(rooms, "/rooms");
+  }
 
-      return res.json(response);
-    } catch (error) {
-      return res.status(500).json(error.toString());
-    }
-  },
-  show: async (req, res) => {},
-  create: async (req, res) => {
-    const { name } = req.body;
+  async join(req, res) {
+    const { id } = req.params;
+
     try {
-      const response = await rooms.create({
-        name,
+      const isRoom = await rooms.findOne({
+        where: {
+          id,
+        },
       });
 
-      return res.json(response);
+      if (!isRoom) return res.status(500).json({ message: "Room not fount" });
+
+      return res.sendStatus(200);
     } catch (error) {
       return res.status(500).json(error.toString());
     }
-  },
-  update: async (req, res) => {},
-  destroy: async (req, res) => {},
-};
+  }
+
+  routes() {
+    const routes = super.routes();
+
+    routes.post("/join", this.join.bind(this));
+
+    return routes;
+  }
+}
+
+export default new RoomController();
