@@ -1,3 +1,5 @@
+import jwt from "jsonwebtoken";
+
 import { sequelize } from "../models";
 
 import BaseController from "./BaseController";
@@ -25,7 +27,12 @@ class UserController extends BaseController {
 
       if (!isUser) return res.status(500).json({ message: "User not found" });
 
-      return res.json(isUser);
+      const token = jwt.sign({ id: isUser.id }, process.env.JWT_SECRET);
+
+      return res.json({
+        user: isUser,
+        token,
+      });
     } catch (error) {}
   }
 

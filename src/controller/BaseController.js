@@ -1,5 +1,7 @@
 import { Router } from "express";
 
+import auth from '../middleware/auth'
+
 import eventEmitter from "../service/eventEmitter";
 
 class BaseController {
@@ -95,8 +97,8 @@ class BaseController {
 
     routes.get(`/${this.path}`, this.index.bind(this));
     routes.get(`/${this.path}/:id`, this.show.bind(this));
-    routes.post(`/${this.path}`, this.create.bind(this));
-    routes.put(`/${this.path}/:id`, this.update.bind(this));
+    routes.post(`/${this.path}`, auth, this.create.bind(this));
+    routes.put(`/${this.path}/:id`, auth, this.update.bind(this));
     routes.delete(`/${this.path}/:id`, this.destroy.bind(this));
 
     return routes;
