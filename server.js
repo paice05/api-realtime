@@ -7,7 +7,7 @@ import cors from "cors";
 
 import routes from "./src/routes";
 
-import serviceSocket from "./src/service/socket";
+import { createConnectionSocket } from "./src/service/socket";
 
 const app = express();
 const server = http.createServer(app);
@@ -15,7 +15,7 @@ const io = socketio(server);
 
 const PORT = process.env.PORT || 3333;
 
-serviceSocket(io);
+createConnectionSocket(io);
 
 app.use(bodyParser.json());
 app.use(morgan("dev"));

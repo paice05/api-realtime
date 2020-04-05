@@ -1,5 +1,7 @@
 import { Router } from "express";
 
+import eventEmitter from "../service/eventEmitter";
+
 class BaseController {
   constructor(model, path) {
     this.model = model;
@@ -37,6 +39,8 @@ class BaseController {
     try {
       const response = await this.model.create(body);
 
+      eventEmitter.emit(`create.${this.path}`, response);
+
       return res.json(response);
     } catch (error) {
       return res.status(500).json(error.toString());
@@ -57,6 +61,8 @@ class BaseController {
         },
       });
 
+      eventEmitter.emit(`update.${this.path}`, response);
+
       return res.json(response);
     } catch (error) {
       return res.status(500).json(error.toString());
@@ -76,6 +82,8 @@ class BaseController {
         },
       });
 
+      eventEmitter.emit(`delete.${this.path}`, response);
+
       return res.sendStatus(200);
     } catch (error) {
       return res.status(500).json(error.toString());
@@ -85,11 +93,11 @@ class BaseController {
   routes() {
     const routes = Router();
 
-    routes.get(this.path, this.index.bind(this));
-    routes.get(`${this.path}/:id`, this.show.bind(this));
-    routes.post(this.path, this.create.bind(this));
-    routes.put(`${this.path}/:id`, this.update.bind(this));
-    routes.delete(`${this.path}/:id`, this.destroy.bind(this));
+    routes.get(`/${this.path}`, this.index.bind(this));
+    routes.get(`/${this.path}/:id`, this.show.bind(this));
+    routes.post(`/${this.path}`, this.create.bind(this));
+    routes.put(`/${this.path}/:id`, this.update.bind(this));
+    routes.delete(`/${this.path}/:id`, this.destroy.bind(this));
 
     return routes;
   }

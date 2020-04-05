@@ -8,7 +8,7 @@ const {
 
 class UserController extends BaseController {
   constructor() {
-    super(users, "/users");
+    super(users, "users");
 
     this.userModel = users;
   }

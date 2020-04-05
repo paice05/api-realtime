@@ -8,7 +8,7 @@ const {
 
 class RoomController extends BaseController {
   constructor() {
-    super(rooms, "/rooms");
+    super(rooms, "rooms");
   }
 
   async join(req, res) {

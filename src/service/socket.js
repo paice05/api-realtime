@@ -1,11 +1,11 @@
-import eventEmitter from "./eventEmitter";
+let socket;
 
-export default (io) => {
-  io.on("connection", (socket) => {
-    console.log(socket.id)
-    
-    eventEmitter.on("joinRoom", ({ room, user }) => {
-      console.log(socket.id)
-    });
+const createConnectionSocket = (io) => {
+  io.on("connection", (socketInstance) => {
+    socket = socketInstance;
+
+    socketInstance.on("disconnect", () => {});
   });
 };
+
+export { socket, createConnectionSocket };

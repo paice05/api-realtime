@@ -8,7 +8,7 @@ const {
 
 class MessagesController extends BaseController {
   constructor() {
-    super(messages, "/messages");
+    super(messages, "messages");
   }
 }
 
